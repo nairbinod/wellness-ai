@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f0f2ed;
+  --paper-raised: #e7eae2;
+  --ink: #12201b;
+  --ink-soft: #4a564e;
+  --rule: #c9cfc2;
+  --rule-strong: #9ca598;
+  --teal: #0e6b5c;
+  --teal-ink: #f0f2ed;
+  --gold: #8c6415;
+  --gold-bg: #f3e7c9;
+  --tag-medspa: #7a4257;
+  --tag-medspa-bg: #ede0e4;
+  --tag-iv: #2a4d66;
+  --tag-iv-bg: #dfe7ed;
+  --tag-mens: #33383d;
+  --tag-mens-bg: #e2e3e1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #10140f;
+    --paper-raised: #171c15;
+    --ink: #e7ece3;
+    --ink-soft: #a8b2a2;
+    --rule: #2c332a;
+    --rule-strong: #454e41;
+    --teal: #3eb49b;
+    --teal-ink: #0a130f;
+    --gold: #d8ac4c;
+    --gold-bg: #2a2314;
+    --tag-medspa: #d998b4;
+    --tag-medspa-bg: #2c1d24;
+    --tag-iv: #8fb6d6;
+    --tag-iv-bg: #1b262f;
+    --tag-mens: #c7cbc4;
+    --tag-mens-bg: #23262a;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-teal: var(--teal);
+  --color-teal-ink: var(--teal-ink);
+  --color-gold: var(--gold);
+  --color-gold-bg: var(--gold-bg);
+  --color-tag-medspa: var(--tag-medspa);
+  --color-tag-medspa-bg: var(--tag-medspa-bg);
+  --color-tag-iv: var(--tag-iv);
+  --color-tag-iv-bg: var(--tag-iv-bg);
+  --color-tag-mens: var(--tag-mens);
+  --color-tag-mens-bg: var(--tag-mens-bg);
+}
+
+body {
+  font-variant-numeric: tabular-nums;
+}
