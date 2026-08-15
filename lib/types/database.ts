@@ -361,6 +361,7 @@ export type Database = {
           consumer_phone: string | null
           created_at: string
           id: string
+          ip_address: string | null
           message: string | null
           referrer: string | null
           service_interest: string | null
@@ -376,6 +377,7 @@ export type Database = {
           consumer_phone?: string | null
           created_at?: string
           id?: string
+          ip_address?: string | null
           message?: string | null
           referrer?: string | null
           service_interest?: string | null
@@ -391,6 +393,7 @@ export type Database = {
           consumer_phone?: string | null
           created_at?: string
           id?: string
+          ip_address?: string | null
           message?: string | null
           referrer?: string | null
           service_interest?: string | null

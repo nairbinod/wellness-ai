@@ -38,6 +38,13 @@ export function LeadForm({
       {utmMedium ? <input type="hidden" name="utm_medium" value={utmMedium} /> : null}
       {referrer ? <input type="hidden" name="referrer" value={referrer} /> : null}
 
+      {/* Honeypot — off-screen (not display:none, some bots skip those), never
+          seen or reachable by real users. Anything filled here means a bot. */}
+      <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }} aria-hidden="true">
+        <label htmlFor="company_website">Leave this field blank</label>
+        <input id="company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div>
         <label className="block text-sm font-medium" htmlFor="consumer_name">
           Name
