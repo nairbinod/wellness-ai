@@ -324,6 +324,7 @@ export default async function ListingPage({
         <div className="mt-4">
           <LeadForm
             businessId={business.id}
+            businessName={business.name}
             sourcePage={path}
             utmSource={utmSource}
             utmMedium={utmMedium}

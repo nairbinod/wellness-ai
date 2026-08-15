@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail } from "@/lib/email";
 
 export type LeadFormState = {
   status: "idle" | "success" | "error";
@@ -14,6 +15,44 @@ const SUCCESS_STATE: LeadFormState = {
   status: "success",
   message: "Thanks! The business will be in touch soon.",
 };
+
+const LEAD_NOTIFICATION_EMAIL = "nairbinod@gmail.com";
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+async function notifyNewLead(lead: {
+  businessName: string;
+  consumerName: string;
+  consumerEmail: string;
+  consumerPhone: string | null;
+  serviceInterest: string | null;
+  message: string | null;
+  sourcePage: string | null;
+}) {
+  const rows = [
+    ["Business", lead.businessName],
+    ["Name", lead.consumerName],
+    ["Email", lead.consumerEmail],
+    ["Phone", lead.consumerPhone ?? "—"],
+    ["Interested in", lead.serviceInterest ?? "—"],
+    ["Message", lead.message ?? "—"],
+    ["Source page", lead.sourcePage ?? "—"],
+  ];
+
+  await sendEmail({
+    to: LEAD_NOTIFICATION_EMAIL,
+    subject: `New lead: ${lead.businessName}`,
+    html: `<table>${rows
+      .map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${escapeHtml(value)}</td></tr>`)
+      .join("")}</table>`,
+  });
+}
 
 function clientIp(headerList: Headers) {
   // Vercel (and most proxies) set x-forwarded-for as "client, proxy1, proxy2…"
@@ -46,6 +85,7 @@ export async function submitLead(
   }
 
   const businessId = formData.get("business_id")?.toString();
+  const businessName = formData.get("business_name")?.toString().trim() || "Unknown business";
   const consumerName = formData.get("consumer_name")?.toString().trim();
   const consumerEmail = formData.get("consumer_email")?.toString().trim();
   const consumerPhone = formData.get("consumer_phone")?.toString().trim();
@@ -86,6 +126,18 @@ export async function submitLead(
   if (error) {
     return { status: "error", message: "Something went wrong. Please try again." };
   }
+
+  // Best-effort — the lead is already saved, so a notification failure
+  // shouldn't turn into a user-facing error.
+  notifyNewLead({
+    businessName,
+    consumerName,
+    consumerEmail,
+    consumerPhone: consumerPhone || null,
+    serviceInterest: serviceInterest || null,
+    message: message || null,
+    sourcePage: sourcePage || null,
+  }).catch((err) => console.error("Lead notification email failed:", err));
 
   return SUCCESS_STATE;
 }

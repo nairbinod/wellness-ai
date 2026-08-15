@@ -9,12 +9,14 @@ const inputClass = "mt-1 w-full border border-rule-strong bg-paper px-3 py-2 tex
 
 export function LeadForm({
   businessId,
+  businessName,
   sourcePage,
   utmSource,
   utmMedium,
   referrer,
 }: {
   businessId: string;
+  businessName: string;
   sourcePage: string;
   utmSource?: string;
   utmMedium?: string;
@@ -33,6 +35,7 @@ export function LeadForm({
   return (
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="business_id" value={businessId} />
+      <input type="hidden" name="business_name" value={businessName} />
       <input type="hidden" name="source_page" value={sourcePage} />
       {utmSource ? <input type="hidden" name="utm_source" value={utmSource} /> : null}
       {utmMedium ? <input type="hidden" name="utm_medium" value={utmMedium} /> : null}
