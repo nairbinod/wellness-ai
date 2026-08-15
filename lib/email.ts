@@ -4,10 +4,7 @@
 // relay, this is the first direct app-code use of it.
 const RESEND_API_URL = "https://api.resend.com/emails";
 
-// resend.dev's shared sender only delivers to the Resend account's own
-// verified email — fine here since the only recipient is the site owner.
-// Swap to a verified custom-domain sender once one exists.
-const FROM_ADDRESS = "PrimeNearby <onboarding@resend.dev>";
+const FROM_ADDRESS = "PrimeNearby <notifications@primenearby.com>";
 
 export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   const apiKey = process.env.RESEND_API_KEY;

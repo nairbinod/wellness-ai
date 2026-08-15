@@ -27,6 +27,21 @@ export function breadcrumbList(items: { name: string; path: string }[]) {
   };
 }
 
+export function faqPageSchema(faqs: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+}
+
 // schema.org doesn't have exact types for "med spa" / "IV therapy clinic" /
 // "men's health clinic" — layering LocalBusiness with the closest medical
 // type as an array is valid JSON-LD and gives Rich Results the specificity

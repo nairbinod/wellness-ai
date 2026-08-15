@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, siteUrl } from "@/lib/jsonld";
 import { Footer } from "@/components/footer";
+import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -53,17 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <Analytics />
         <SpeedInsights />
-        {GA_MEASUREMENT_ID ? (
-          <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}');`}
-            </Script>
-          </>
-        ) : null}
+        <CookieConsent gaMeasurementId={GA_MEASUREMENT_ID} />
       </body>
     </html>
   );

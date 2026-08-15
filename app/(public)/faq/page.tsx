@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { siteUrl, SITE_NAME } from "@/lib/jsonld";
+import { siteUrl, SITE_NAME, faqPageSchema } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -44,8 +44,14 @@ const FAQS = [
 ];
 
 export default function FaqPage() {
+  const jsonLd = faqPageSchema(FAQS);
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="font-mono text-[11px] tracking-wider uppercase text-teal">FAQ</div>
       <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
         Frequently asked questions

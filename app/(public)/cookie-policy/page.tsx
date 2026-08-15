@@ -18,8 +18,9 @@ export default function CookiePolicyPage() {
       <p className="mt-2 font-mono text-xs text-ink-soft">Effective August 12, 2026</p>
 
       <p className={p}>
-        {SITE_NAME} keeps cookies to the minimum needed to run the site. We don&apos;t use
-        advertising or cross-site tracking cookies.
+        {SITE_NAME} keeps cookies to the minimum needed to run the site plus, only if you accept
+        them, basic traffic analytics. We don&apos;t use advertising or cross-site tracking
+        cookies.
       </p>
 
       <h2 className={h2}>Essential cookies</h2>
@@ -27,6 +28,14 @@ export default function CookiePolicyPage() {
         Used to keep you signed in to your dashboard or admin session (via Supabase Auth) and to
         protect forms from cross-site request forgery. These are required for the site to
         function and can&apos;t be disabled without breaking sign-in.
+      </p>
+
+      <h2 className={h2}>Analytics cookies (optional)</h2>
+      <p className={p}>
+        A banner on your first visit lets you accept or decline Google Analytics. If you accept,
+        Google Analytics sets cookies to count visits and popular pages; nothing loads until you
+        do. Choosing &quot;Essential only&quot; keeps analytics off entirely — your choice is
+        remembered in your browser and can be changed anytime by clearing site data.
       </p>
 
       <h2 className={h2}>What we don&apos;t use</h2>
