@@ -130,6 +130,14 @@ export async function Footer() {
             © {new Date().getFullYear()} {SITE_NAME}
           </span>
           <span>{metros?.length ?? 0} metros · 3 verticals</span>
+          <span className="font-mono">
+            {process.env.NEXT_PUBLIC_BUILD_SHA} · updated{" "}
+            {new Date(process.env.NEXT_PUBLIC_BUILD_TIME ?? "1970-01-01T00:00:00.000Z").toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
         </div>
       </div>
     </footer>
