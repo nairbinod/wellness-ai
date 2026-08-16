@@ -47,7 +47,7 @@ export async function Footer() {
           <div>
             <div className="font-mono text-base font-bold">{SITE_NAME}</div>
             <p className="mt-2.5 max-w-[26ch] text-xs leading-relaxed text-ink-soft">
-              The local wellness &amp; aesthetics registry — med spas, IV therapy, and men&apos;s
+              The local wellness &amp; aesthetics directory — med spas, IV therapy, and men&apos;s
               health clinics, with real pricing where providers publish it.
             </p>
             <div className="mt-3.5 font-mono text-[11px] text-ink-soft">

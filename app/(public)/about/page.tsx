@@ -4,7 +4,7 @@ import { siteUrl, SITE_NAME } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `${SITE_NAME} is a local wellness & aesthetics registry for med spas, IV therapy, and men's health clinics, with real per-service pricing where providers publish it.`,
+  description: `${SITE_NAME} is a local wellness & aesthetics directory for med spas, IV therapy, and men's health clinics, with real per-service pricing where providers publish it.`,
   alternates: { canonical: siteUrl("/about") },
 };
 
@@ -13,7 +13,7 @@ export default function AboutPage() {
     <main className="mx-auto max-w-3xl px-6 py-16">
       <div className="font-mono text-[11px] tracking-wider uppercase text-teal">About</div>
       <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-        A registry, not a review site
+        A directory, not a review site
       </h1>
       <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-ink-soft">
         Most local directories rank listings by who pays the most. {SITE_NAME} was built the

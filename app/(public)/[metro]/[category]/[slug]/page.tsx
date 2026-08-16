@@ -147,8 +147,7 @@ export default async function ListingPage({
           ) : null}
           <h1 className="mt-2.5 text-2xl font-semibold tracking-tight">{business.name}</h1>
           <p className="mt-1.5 text-sm text-ink-soft">
-            {business.address ? `${business.address}, ` : ""}
-            {business.city}, {business.state} {business.zip}
+            {business.address || `${business.city}, ${business.state} ${business.zip}`}
           </p>
 
           {avgRating != null ? (

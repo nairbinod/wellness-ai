@@ -43,7 +43,7 @@ export default function HowItWorksPage() {
     <main className="mx-auto max-w-3xl px-6 py-16">
       <div className="font-mono text-[11px] tracking-wider uppercase text-teal">How It Works</div>
       <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-        Two sides, one registry
+        Two sides, one directory
       </h1>
       <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-ink-soft">
         {SITE_NAME} works the same way whether you&apos;re comparing providers or you run one.

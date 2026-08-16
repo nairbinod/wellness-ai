@@ -49,7 +49,7 @@ export default async function HomePage() {
       {/* Hero */}
       <div className="border border-rule bg-paper-raised px-9 py-11">
         <div className="font-mono text-[11px] tracking-wider uppercase text-teal">
-          {SITE_NAME} — Local Wellness &amp; Aesthetics Registry
+          {SITE_NAME} — Local Wellness &amp; Aesthetics Directory
         </div>
         <h1 className="mt-3 max-w-[18ch] text-3xl font-semibold tracking-tight sm:text-4xl">
           Find med spas, IV therapy, and men&apos;s health clinics near you
