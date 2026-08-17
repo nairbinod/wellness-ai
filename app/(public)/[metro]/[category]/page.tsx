@@ -9,6 +9,7 @@ import { ListingCard } from "@/components/listing-card";
 import { Pagination, PAGE_SIZE_OPTIONS, resolvePage, resolvePageSize } from "@/components/pagination";
 import { CATEGORY_LABELS, categoryFromSlug } from "@/lib/categories";
 import { getMetroCategoryEditorial } from "@/lib/metro-editorial";
+import { UseLocationButton } from "@/components/use-location-button";
 
 export async function generateMetadata({
   params,
@@ -40,12 +41,23 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ metro: string; category: string }>;
-  searchParams: Promise<{ q?: string; subcategory?: string; page?: string; per_page?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    subcategory?: string;
+    page?: string;
+    per_page?: string;
+    lat?: string;
+    lng?: string;
+  }>;
 }) {
   const { metro: metroSlug, category: categorySlug } = await params;
-  const { q, subcategory, page: pageParam, per_page } = await searchParams;
+  const { q, subcategory, page: pageParam, per_page, lat, lng } = await searchParams;
   const category = categoryFromSlug(categorySlug);
   if (!category) notFound();
+
+  const nearLat = lat ? Number(lat) : undefined;
+  const nearLng = lng ? Number(lng) : undefined;
+  const hasLocation = nearLat != null && Number.isFinite(nearLat) && nearLng != null && Number.isFinite(nearLng);
 
   const page = resolvePage(pageParam);
   const pageSize = resolvePageSize(per_page);
@@ -67,6 +79,7 @@ export default async function CategoryPage({
     category,
     page,
     pageSize,
+    ...(hasLocation ? { nearLat, nearLng } : {}),
   });
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -125,7 +138,26 @@ export default async function CategoryPage({
         </div>
       ) : null}
 
-      <form className="mt-6 flex flex-wrap gap-3" action={`/${metro.slug}/${categorySlug}`}>
+      <div className="mt-5">
+        {hasLocation ? (
+          <p className="text-xs text-ink-soft">
+            Sorted by distance from your location —{" "}
+            <Link href={`/${metro.slug}/${categorySlug}`} className="text-teal hover:underline">
+              clear
+            </Link>
+          </p>
+        ) : (
+          <UseLocationButton mode="refine-page" />
+        )}
+      </div>
+
+      <form className="mt-4 flex flex-wrap gap-3" action={`/${metro.slug}/${categorySlug}`}>
+        {hasLocation ? (
+          <>
+            <input type="hidden" name="lat" value={lat} />
+            <input type="hidden" name="lng" value={lng} />
+          </>
+        ) : null}
         <input
           type="text"
           name="q"
@@ -180,13 +212,14 @@ export default async function CategoryPage({
                   photoUrl={photo?.url}
                   priceLabel={tier ?? "—"}
                   featured={business.listing_tier === "featured"}
+                  distanceMiles={business.distanceMiles}
                 />
               );
             })}
           </div>
           <Pagination
             basePath={`/${metro.slug}/${categorySlug}`}
-            params={{ q, subcategory, per_page: String(pageSize) }}
+            params={{ q, subcategory, per_page: String(pageSize), lat, lng }}
             page={page}
             totalPages={totalPages}
           />

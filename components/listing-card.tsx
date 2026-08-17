@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CATEGORY_LABELS, CATEGORY_TAG_CLASS, type BusinessCategory } from "@/lib/categories";
 import { TrustBadgePills } from "@/components/trust-badges";
+import { formatDistance } from "@/lib/geo";
 
 type CardBusiness = {
   name: string;
@@ -20,12 +21,14 @@ export function ListingCard({
   photoUrl,
   priceLabel = "—",
   featured = false,
+  distanceMiles,
 }: {
   business: CardBusiness;
   href: string;
   photoUrl?: string;
   priceLabel?: string;
   featured?: boolean;
+  distanceMiles?: number | null;
 }) {
   const tag = CATEGORY_TAG_CLASS[business.category];
 
@@ -62,6 +65,7 @@ export function ListingCard({
         <div className="mt-0.5 text-xs text-ink-soft">
           {business.city}
           {business.state ? `, ${business.state}` : ""}
+          {distanceMiles != null ? ` · ${formatDistance(distanceMiles)}` : ""}
         </div>
         <div className="mt-2.5 flex flex-wrap gap-1">
           <TrustBadgePills business={business} />

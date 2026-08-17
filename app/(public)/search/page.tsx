@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { searchBusinesses, primaryPhoto } from "@/lib/search";
@@ -5,6 +6,7 @@ import { priceTier } from "@/lib/pricing";
 import { ListingCard } from "@/components/listing-card";
 import { Pagination, PAGE_SIZE_OPTIONS, resolvePage, resolvePageSize } from "@/components/pagination";
 import { CATEGORY_LABELS, CATEGORY_SLUGS, type BusinessCategory } from "@/lib/categories";
+import { UseLocationButton } from "@/components/use-location-button";
 
 function isBusinessCategory(value: string): value is BusinessCategory {
   return value in CATEGORY_LABELS;
@@ -25,20 +27,34 @@ export default async function SearchPage({
     subcategory?: string;
     page?: string;
     per_page?: string;
+    lat?: string;
+    lng?: string;
   }>;
 }) {
-  const { q, metro: metroSlug, category: categoryParam, subcategory, page: pageParam, per_page } =
-    await searchParams;
+  const {
+    q,
+    metro: metroSlug,
+    category: categoryParam,
+    subcategory,
+    page: pageParam,
+    per_page,
+    lat,
+    lng,
+  } = await searchParams;
   const category = categoryParam && isBusinessCategory(categoryParam) ? categoryParam : undefined;
   const page = resolvePage(pageParam);
   const pageSize = resolvePageSize(per_page);
+
+  const nearLat = lat ? Number(lat) : undefined;
+  const nearLng = lng ? Number(lng) : undefined;
+  const hasLocation = nearLat != null && Number.isFinite(nearLat) && nearLng != null && Number.isFinite(nearLng);
 
   const supabase = await createClient();
 
   const { data: metros } = await supabase.from("metros").select("id, slug, name, state").order("name");
   const selectedMetro = metros?.find((m) => m.slug === metroSlug);
 
-  const hasFilters = Boolean(q || metroSlug || category || subcategory);
+  const hasFilters = Boolean(q || metroSlug || category || subcategory || hasLocation);
   const { businesses: results, total } = hasFilters
     ? await searchBusinesses(supabase, {
         q,
@@ -47,6 +63,7 @@ export default async function SearchPage({
         subcategory,
         page,
         pageSize,
+        ...(hasLocation ? { nearLat, nearLng } : {}),
       })
     : { businesses: [], total: 0 };
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -55,7 +72,26 @@ export default async function SearchPage({
     <main className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
 
-      <form className="mt-6 grid gap-3 sm:grid-cols-4" action="/search">
+      <div className="mt-4">
+        {hasLocation ? (
+          <p className="text-xs text-ink-soft">
+            Sorted by distance from your location —{" "}
+            <Link href="/search" className="text-teal hover:underline">
+              clear
+            </Link>
+          </p>
+        ) : (
+          <UseLocationButton mode="refine-page" />
+        )}
+      </div>
+
+      <form className="mt-4 grid gap-3 sm:grid-cols-4" action="/search">
+        {hasLocation ? (
+          <>
+            <input type="hidden" name="lat" value={lat} />
+            <input type="hidden" name="lng" value={lng} />
+          </>
+        ) : null}
         <input
           type="text"
           name="q"
@@ -135,6 +171,7 @@ export default async function SearchPage({
                   photoUrl={photo?.url}
                   priceLabel={tier ?? "—"}
                   featured={business.listing_tier === "featured"}
+                  distanceMiles={business.distanceMiles}
                 />
               );
             })}
@@ -147,6 +184,8 @@ export default async function SearchPage({
               category,
               subcategory,
               per_page: String(pageSize),
+              lat,
+              lng,
             }}
             page={page}
             totalPages={totalPages}

@@ -6,6 +6,7 @@ import { CATEGORY_LABELS, CATEGORY_SLUGS, CATEGORY_TAG_CLASS, type BusinessCateg
 import { getFeaturedBusinesses, primaryPhoto } from "@/lib/search";
 import { priceTier } from "@/lib/pricing";
 import { ListingCard } from "@/components/listing-card";
+import { UseLocationButton } from "@/components/use-location-button";
 
 export const metadata: Metadata = {
   alternates: { canonical: siteUrl("/") },
@@ -15,7 +16,7 @@ export default async function HomePage() {
   const supabase = await createClient();
 
   const [{ data: metros }, { count: businessCount }, featured] = await Promise.all([
-    supabase.from("metros").select("slug, name, state").order("name"),
+    supabase.from("metros").select("slug, name, state, lat, lng").order("name"),
     supabase.from("businesses").select("id", { count: "exact", head: true }),
     getFeaturedBusinesses(supabase),
   ]);
@@ -84,6 +85,15 @@ export default async function HomePage() {
           </Link>
           .
         </p>
+
+        {metros?.length ? (
+          <div className="mt-4">
+            <UseLocationButton mode="redirect-to-metro" metros={metros} />
+            <p className="mt-1.5 text-xs text-ink-soft">
+              Jumps to your nearest metro, sorted by distance from you.
+            </p>
+          </div>
+        ) : null}
 
         <div className="mt-8 flex flex-wrap gap-8">
           <div>
