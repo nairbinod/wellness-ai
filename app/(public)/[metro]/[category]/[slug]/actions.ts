@@ -114,17 +114,24 @@ export async function submitLead(
     return { status: "error", message: "Something went wrong. Please try again." };
   }
 
-  // Best-effort — the lead is already saved, so a notification failure
-  // shouldn't turn into a user-facing error.
-  notifyNewLead({
-    businessName,
-    consumerName,
-    consumerEmail,
-    consumerPhone: consumerPhone || null,
-    serviceInterest: serviceInterest || null,
-    message: message || null,
-    sourcePage: sourcePage || null,
-  }).catch((err) => console.error("Lead notification email failed:", err));
+  // Awaited (not fire-and-forget) — Vercel's serverless runtime can freeze
+  // the function the instant the response is sent, so an un-awaited promise
+  // here risks never actually completing the fetch to Resend. Still
+  // best-effort in the sense that a failure here doesn't turn into a
+  // user-facing error — the lead is already saved either way.
+  try {
+    await notifyNewLead({
+      businessName,
+      consumerName,
+      consumerEmail,
+      consumerPhone: consumerPhone || null,
+      serviceInterest: serviceInterest || null,
+      message: message || null,
+      sourcePage: sourcePage || null,
+    });
+  } catch (err) {
+    console.error("Lead notification email failed:", err);
+  }
 
   return SUCCESS_STATE;
 }
