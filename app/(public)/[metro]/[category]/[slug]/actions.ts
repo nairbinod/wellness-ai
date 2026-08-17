@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, notificationTable, SITE_OWNER_EMAIL } from "@/lib/email";
 
 export type LeadFormState = {
   status: "idle" | "success" | "error";
@@ -16,16 +16,6 @@ const SUCCESS_STATE: LeadFormState = {
   message: "Thanks! The business will be in touch soon.",
 };
 
-const LEAD_NOTIFICATION_EMAIL = "nairbinod@gmail.com";
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 async function notifyNewLead(lead: {
   businessName: string;
   consumerName: string;
@@ -35,22 +25,18 @@ async function notifyNewLead(lead: {
   message: string | null;
   sourcePage: string | null;
 }) {
-  const rows = [
-    ["Business", lead.businessName],
-    ["Name", lead.consumerName],
-    ["Email", lead.consumerEmail],
-    ["Phone", lead.consumerPhone ?? "—"],
-    ["Interested in", lead.serviceInterest ?? "—"],
-    ["Message", lead.message ?? "—"],
-    ["Source page", lead.sourcePage ?? "—"],
-  ];
-
   await sendEmail({
-    to: LEAD_NOTIFICATION_EMAIL,
+    to: SITE_OWNER_EMAIL,
     subject: `New lead: ${lead.businessName}`,
-    html: `<table>${rows
-      .map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${escapeHtml(value)}</td></tr>`)
-      .join("")}</table>`,
+    html: notificationTable([
+      ["Business", lead.businessName],
+      ["Name", lead.consumerName],
+      ["Email", lead.consumerEmail],
+      ["Phone", lead.consumerPhone ?? "—"],
+      ["Interested in", lead.serviceInterest ?? "—"],
+      ["Message", lead.message ?? "—"],
+      ["Source page", lead.sourcePage ?? "—"],
+    ]),
   });
 }
 

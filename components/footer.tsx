@@ -10,6 +10,7 @@ const RESOURCE_LINKS = [
   { label: "FAQ", href: "/faq" },
   { label: "How It Works", href: "/how-it-works" },
   { label: "About", href: "/about" },
+  { label: "For Providers", href: "/for-providers" },
 ];
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },

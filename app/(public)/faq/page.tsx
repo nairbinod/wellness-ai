@@ -31,7 +31,7 @@ const FAQS = [
   },
   {
     q: "My business isn't listed at all — can I add it?",
-    a: "Reach out through the contact link in the footer with your business name, city, and category, and we'll get it added to the next import for your metro.",
+    a: "Reach out through the For Providers link in the footer with your business name, city, and category, and we'll get it added to the next import for your metro.",
   },
   {
     q: "Do you sell my contact info to multiple businesses?",
