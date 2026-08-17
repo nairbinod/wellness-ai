@@ -42,10 +42,15 @@ export function LeadForm({
       {referrer ? <input type="hidden" name="referrer" value={referrer} /> : null}
 
       {/* Honeypot — off-screen (not display:none, some bots skip those), never
-          seen or reachable by real users. Anything filled here means a bot. */}
+          seen or reachable by real users. Named/autocompleted specifically to
+          avoid browser autofill (a field literally named "company_website"
+          risks being auto-populated by saved address/company profiles, which
+          would silently drop real submissions — "new-password" is the one
+          autocomplete value browsers reliably respect as an opt-out signal).
+          Anything filled here means a bot. */}
       <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }} aria-hidden="true">
-        <label htmlFor="company_website">Leave this field blank</label>
-        <input id="company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="hp_field">Leave this field blank</label>
+        <input id="hp_field" name="hp_field" type="text" tabIndex={-1} autoComplete="new-password" />
       </div>
 
       <div>

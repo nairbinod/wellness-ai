@@ -61,7 +61,8 @@ export async function submitContactForm(
   // Honeypot — see contact-form.tsx. Real users never see or fill this
   // field, so anything in it means a bot; report success without writing a
   // row so scripted submitters get no signal to adjust and retry.
-  if (formData.get("company_website")?.toString().trim()) {
+  if (formData.get("hp_field")?.toString().trim()) {
+    console.warn("Contact form honeypot triggered — submission dropped as spam.");
     return SUCCESS_STATE;
   }
 

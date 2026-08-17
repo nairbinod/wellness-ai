@@ -66,7 +66,8 @@ export async function submitLead(
   // Honeypot — real users never see or fill this field (see lead-form.tsx),
   // so anything in it is a bot. Report success without writing a row, so
   // scripted bots don't get a signal to adjust and retry.
-  if (formData.get("company_website")?.toString().trim()) {
+  if (formData.get("hp_field")?.toString().trim()) {
+    console.warn("Lead form honeypot triggered — submission dropped as spam.");
     return SUCCESS_STATE;
   }
 
