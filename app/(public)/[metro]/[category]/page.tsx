@@ -8,6 +8,7 @@ import { priceTier } from "@/lib/pricing";
 import { ListingCard } from "@/components/listing-card";
 import { Pagination, PAGE_SIZE_OPTIONS, resolvePage, resolvePageSize } from "@/components/pagination";
 import { CATEGORY_LABELS, categoryFromSlug } from "@/lib/categories";
+import { getMetroCategoryEditorial } from "@/lib/metro-editorial";
 
 export async function generateMetadata({
   params,
@@ -78,6 +79,8 @@ export default async function CategoryPage({
     },
   ]);
 
+  const editorial = getMetroCategoryEditorial(metro.slug, metro.state, category);
+
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       <script
@@ -96,6 +99,31 @@ export default async function CategoryPage({
       <h1 className="mt-2 text-2xl font-semibold tracking-tight">
         {CATEGORY_LABELS[category]} in {metro.name}, {metro.state}
       </h1>
+
+      {editorial.intro ? (
+        <div className="mt-5 max-w-[75ch] space-y-3 text-[15px] leading-relaxed text-ink-soft">
+          {editorial.intro.paragraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
+
+      {editorial.regulatory ? (
+        <div className="mt-5 max-w-[75ch] border border-rule-strong bg-paper-raised p-5">
+          <h2 className="font-mono text-[11px] tracking-wider uppercase text-teal">
+            {editorial.regulatory.heading}
+          </h2>
+          <div className="mt-2.5 space-y-2.5 text-sm leading-relaxed text-ink-soft">
+            {editorial.regulatory.paragraphs.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-ink-soft">
+            General information, not legal or medical advice — regulations change and can vary by
+            individual clinic and license type. When in doubt, ask the provider directly.
+          </p>
+        </div>
+      ) : null}
 
       <form className="mt-6 flex flex-wrap gap-3" action={`/${metro.slug}/${categorySlug}`}>
         <input
