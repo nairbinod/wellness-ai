@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { CATEGORY_LABELS, CATEGORY_TAG_CLASS, type BusinessCategory } from "@/lib/categories";
 import { TrustBadgePills } from "@/components/trust-badges";
+import { CompareToggle } from "@/components/compare-toggle";
 import { formatDistance } from "@/lib/geo";
 
 type CardBusiness = {
+  id: string;
   name: string;
   city: string | null;
   state: string | null;
@@ -73,7 +75,10 @@ export function ListingCard({
       </div>
       <div className="flex items-center justify-between px-4 py-2.5 border-t border-rule">
         <span className="font-mono text-[13px]">{priceLabel}</span>
-        <span className="font-mono text-[11px] tracking-wider uppercase text-teal">View →</span>
+        <div className="flex items-center gap-3">
+          <CompareToggle businessId={business.id} />
+          <span className="font-mono text-[11px] tracking-wider uppercase text-teal">View →</span>
+        </div>
       </div>
     </Link>
   );

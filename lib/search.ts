@@ -10,6 +10,7 @@ export type BusinessSearchFilters = {
   metroId?: string;
   category?: BusinessCategory;
   subcategory?: string;
+  city?: string;
   listingTier?: ListingTier;
   page?: number;
   pageSize?: number;
@@ -33,7 +34,7 @@ const MAX_ROWS_FOR_DISTANCE_SORT = 1000;
 
 function applyFilters<T>(
   query: T,
-  { q, metroId, category, subcategory, listingTier }: BusinessSearchFilters
+  { q, metroId, category, subcategory, city, listingTier }: BusinessSearchFilters
 ) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let q_ = query as any;
@@ -43,6 +44,7 @@ function applyFilters<T>(
   if (metroId) q_ = q_.eq("metro_id", metroId);
   if (category) q_ = q_.eq("category", category);
   if (subcategory?.trim()) q_ = q_.contains("subcategories", [subcategory.trim()]);
+  if (city?.trim()) q_ = q_.ilike("city", city.trim());
   if (listingTier) q_ = q_.eq("listing_tier", listingTier);
   return q_;
 }

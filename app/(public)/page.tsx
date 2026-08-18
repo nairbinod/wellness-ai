@@ -7,6 +7,8 @@ import { getFeaturedBusinesses, primaryPhoto } from "@/lib/search";
 import { priceTier } from "@/lib/pricing";
 import { ListingCard } from "@/components/listing-card";
 import { UseLocationButton } from "@/components/use-location-button";
+import { NeighborhoodSearch } from "@/components/neighborhood-search";
+import { TREATMENT_CHIPS } from "@/lib/treatments";
 
 export const metadata: Metadata = {
   alternates: { canonical: siteUrl("/") },
@@ -78,7 +80,19 @@ export default async function HomePage() {
           </button>
         </form>
 
-        <p className="mt-3 text-sm text-ink-soft">
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {TREATMENT_CHIPS.map((chip) => (
+            <Link
+              key={chip.query}
+              href={`/search?q=${encodeURIComponent(chip.query)}`}
+              className="border border-rule-strong px-3 py-1.5 font-mono text-xs tracking-wider uppercase hover:border-ink hover:bg-paper-raised"
+            >
+              {chip.label}
+            </Link>
+          ))}
+        </div>
+
+        <p className="mt-4 text-sm text-ink-soft">
           Not sure where to start?{" "}
           <Link href="/get-matched" className="text-teal hover:underline">
             Answer a few questions and get matched
@@ -160,7 +174,13 @@ export default async function HomePage() {
       {/* Browse by metro */}
       {metros?.length ? (
         <div className="mt-14">
-          <h2 className="text-lg font-semibold">Browse by metro</h2>
+          <h2 className="text-lg font-semibold">Browse by metro or city</h2>
+          <p className="mt-1.5 text-sm text-ink-soft">
+            Search any city or suburb (Frisco, Plano, Marietta…) or pick a launch metro directly.
+          </p>
+          <div className="mt-4">
+            <NeighborhoodSearch />
+          </div>
           <ul className="mt-4 flex flex-wrap gap-2.5">
             {metros.map((metro) => (
               <li key={metro.slug}>

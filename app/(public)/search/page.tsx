@@ -25,6 +25,7 @@ export default async function SearchPage({
     metro?: string;
     category?: string;
     subcategory?: string;
+    city?: string;
     page?: string;
     per_page?: string;
     lat?: string;
@@ -36,6 +37,7 @@ export default async function SearchPage({
     metro: metroSlug,
     category: categoryParam,
     subcategory,
+    city,
     page: pageParam,
     per_page,
     lat,
@@ -54,13 +56,14 @@ export default async function SearchPage({
   const { data: metros } = await supabase.from("metros").select("id, slug, name, state").order("name");
   const selectedMetro = metros?.find((m) => m.slug === metroSlug);
 
-  const hasFilters = Boolean(q || metroSlug || category || subcategory || hasLocation);
+  const hasFilters = Boolean(q || metroSlug || category || subcategory || city || hasLocation);
   const { businesses: results, total } = hasFilters
     ? await searchBusinesses(supabase, {
         q,
         metroId: selectedMetro?.id,
         category,
         subcategory,
+        city,
         page,
         pageSize,
         ...(hasLocation ? { nearLat, nearLng } : {}),
@@ -72,7 +75,18 @@ export default async function SearchPage({
     <main className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-1">
+        {city ? (
+          <p className="text-xs text-ink-soft">
+            Showing {city} only —{" "}
+            <Link
+              href={`/search?${new URLSearchParams({ ...(metroSlug ? { metro: metroSlug } : {}) }).toString()}`}
+              className="text-teal hover:underline"
+            >
+              clear
+            </Link>
+          </p>
+        ) : null}
         {hasLocation ? (
           <p className="text-xs text-ink-soft">
             Sorted by distance from your location —{" "}
@@ -86,6 +100,7 @@ export default async function SearchPage({
       </div>
 
       <form className="mt-4 grid gap-3 sm:grid-cols-4" action="/search">
+        {city ? <input type="hidden" name="city" value={city} /> : null}
         {hasLocation ? (
           <>
             <input type="hidden" name="lat" value={lat} />
@@ -183,6 +198,7 @@ export default async function SearchPage({
               metro: metroSlug,
               category,
               subcategory,
+              city,
               per_page: String(pageSize),
               lat,
               lng,

@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, siteUrl } from "@/lib/jsonld";
 import { Footer } from "@/components/footer";
 import { CookieConsent } from "@/components/cookie-consent";
+import { CompareBar } from "@/components/compare-bar";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Analytics />
         <SpeedInsights />
         <CookieConsent gaMeasurementId={GA_MEASUREMENT_ID} />
+        <CompareBar />
       </body>
     </html>
   );

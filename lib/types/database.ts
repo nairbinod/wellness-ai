@@ -105,6 +105,7 @@ export type Database = {
           claimed_by: string | null
           consult_types: string[] | null
           created_at: string
+          credentials: string | null
           description: string | null
           facebook_url: string | null
           financing_options: string[] | null
@@ -138,6 +139,7 @@ export type Database = {
           claimed_by?: string | null
           consult_types?: string[] | null
           created_at?: string
+          credentials?: string | null
           description?: string | null
           facebook_url?: string | null
           financing_options?: string[] | null
@@ -171,6 +173,7 @@ export type Database = {
           claimed_by?: string | null
           consult_types?: string[] | null
           created_at?: string
+          credentials?: string | null
           description?: string | null
           facebook_url?: string | null
           financing_options?: string[] | null
