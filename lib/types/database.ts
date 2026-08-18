@@ -107,6 +107,7 @@ export type Database = {
           created_at: string
           credentials: string | null
           description: string | null
+          email: string | null
           facebook_url: string | null
           financing_options: string[] | null
           first_time_friendly: boolean
@@ -141,6 +142,7 @@ export type Database = {
           created_at?: string
           credentials?: string | null
           description?: string | null
+          email?: string | null
           facebook_url?: string | null
           financing_options?: string[] | null
           first_time_friendly?: boolean
@@ -175,6 +177,7 @@ export type Database = {
           created_at?: string
           credentials?: string | null
           description?: string | null
+          email?: string | null
           facebook_url?: string | null
           financing_options?: string[] | null
           first_time_friendly?: boolean
