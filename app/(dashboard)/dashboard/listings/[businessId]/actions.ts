@@ -52,6 +52,7 @@ export async function updateListing(businessId: string, formData: FormData) {
       financing_options: parseList(formData.get("financing_options")),
       consult_types: parseList(formData.get("consult_types")),
       credentials: formData.get("credentials")?.toString().trim() || null,
+      current_special: formData.get("current_special")?.toString().trim() || null,
       first_time_friendly: formData.get("first_time_friendly") === "yes",
       responds_to_inquiries: formData.get("responds_to_inquiries") === "yes",
       updated_at: new Date().toISOString(),

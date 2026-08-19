@@ -106,6 +106,7 @@ export type Database = {
           consult_types: string[] | null
           created_at: string
           credentials: string | null
+          current_special: string | null
           description: string | null
           email: string | null
           facebook_url: string | null
@@ -128,6 +129,7 @@ export type Database = {
           tiktok_url: string | null
           updated_at: string
           verified: boolean
+          verified_at: string | null
           website: string | null
           zip: string | null
         }
@@ -141,6 +143,7 @@ export type Database = {
           consult_types?: string[] | null
           created_at?: string
           credentials?: string | null
+          current_special?: string | null
           description?: string | null
           email?: string | null
           facebook_url?: string | null
@@ -163,6 +166,7 @@ export type Database = {
           tiktok_url?: string | null
           updated_at?: string
           verified?: boolean
+          verified_at?: string | null
           website?: string | null
           zip?: string | null
         }
@@ -176,6 +180,7 @@ export type Database = {
           consult_types?: string[] | null
           created_at?: string
           credentials?: string | null
+          current_special?: string | null
           description?: string | null
           email?: string | null
           facebook_url?: string | null
@@ -198,6 +203,7 @@ export type Database = {
           tiktok_url?: string | null
           updated_at?: string
           verified?: boolean
+          verified_at?: string | null
           website?: string | null
           zip?: string | null
         }

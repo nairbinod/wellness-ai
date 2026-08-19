@@ -33,7 +33,7 @@ export default async function ManageListingPage({
   const { data: business } = await supabase
     .from("businesses")
     .select(
-      "id, name, slug, category, claimed_by, address, city, state, zip, hours, description, phone, website, booking_url, facebook_url, instagram_url, tiktok_url, financing_options, consult_types, credentials, first_time_friendly, responds_to_inquiries, metro:metros(slug, name, state)"
+      "id, name, slug, category, claimed_by, address, city, state, zip, hours, description, phone, website, booking_url, facebook_url, instagram_url, tiktok_url, financing_options, consult_types, credentials, current_special, first_time_friendly, responds_to_inquiries, metro:metros(slug, name, state)"
     )
     .eq("id", businessId)
     .maybeSingle();
@@ -246,6 +246,22 @@ export default async function ManageListingPage({
               className={inputClass}
             />
             <p className="mt-1 text-xs text-ink-soft">Shown on Compare pages.</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium" htmlFor="current_special">
+              Current special <span className="font-normal text-ink-soft">(optional)</span>
+            </label>
+            <input
+              id="current_special"
+              name="current_special"
+              defaultValue={business.current_special ?? ""}
+              placeholder="$50 off first Botox visit — mention PrimeNearby"
+              className={inputClass}
+            />
+            <p className="mt-1 text-xs text-ink-soft">
+              Shown on your public listing. Leave blank when there&apos;s nothing running — remove
+              it promptly once an offer ends.
+            </p>
           </div>
           <div className="flex flex-wrap gap-4">
             <label className="flex items-center gap-2 text-sm">

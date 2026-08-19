@@ -39,8 +39,10 @@ export function getSnapshot(): string[] {
   return cache;
 }
 
+const EMPTY: string[] = [];
+
 export function getServerSnapshot(): string[] {
-  return [];
+  return EMPTY;
 }
 
 export function toggleCompare(id: string) {

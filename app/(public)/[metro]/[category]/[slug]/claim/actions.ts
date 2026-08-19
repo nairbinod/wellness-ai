@@ -69,9 +69,10 @@ function websiteDomain(website: string | null) {
 
 async function finalizeClaim(businessId: string, userId: string) {
   const admin = createAdminClient();
+  const now = new Date().toISOString();
   await admin
     .from("businesses")
-    .update({ claimed_by: userId, claim_status: "verified", updated_at: new Date().toISOString() })
+    .update({ claimed_by: userId, claim_status: "verified", verified_at: now, updated_at: now })
     .eq("id", businessId);
 }
 

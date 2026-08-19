@@ -163,13 +163,14 @@ export async function approveDocumentClaim(verificationId: string) {
   if (!verification) redirect(`/admin/claims?error=${encodeURIComponent("Claim not found.")}`);
 
   const reviewedBy = await currentAdminId();
+  const now = new Date().toISOString();
   await admin
     .from("claim_verifications")
-    .update({ status: "verified", reviewed_by: reviewedBy, reviewed_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .update({ status: "verified", reviewed_by: reviewedBy, reviewed_at: now, updated_at: now })
     .eq("id", verificationId);
   await admin
     .from("businesses")
-    .update({ claimed_by: verification.claimant_user_id, claim_status: "verified", updated_at: new Date().toISOString() })
+    .update({ claimed_by: verification.claimant_user_id, claim_status: "verified", verified_at: now, updated_at: now })
     .eq("id", verification.business_id);
 
   revalidatePath("/admin/claims");
@@ -210,9 +211,10 @@ export async function approveDispute(verificationId: string) {
   if (!verification) redirect(`/admin/claims?error=${encodeURIComponent("Dispute not found.")}`);
 
   const reviewedBy = await currentAdminId();
+  const now = new Date().toISOString();
   await admin
     .from("claim_verifications")
-    .update({ status: "verified", reviewed_by: reviewedBy, reviewed_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .update({ status: "verified", reviewed_by: reviewedBy, reviewed_at: now, updated_at: now })
     .eq("id", verificationId);
   // Reassigning ownership on dispute approval — the previous owner's claim
   // isn't separately tracked as a claim_verifications row (the original
@@ -220,7 +222,7 @@ export async function approveDispute(verificationId: string) {
   // update beyond businesses.claimed_by itself.
   await admin
     .from("businesses")
-    .update({ claimed_by: verification.claimant_user_id, claim_status: "verified", updated_at: new Date().toISOString() })
+    .update({ claimed_by: verification.claimant_user_id, claim_status: "verified", verified_at: now, updated_at: now })
     .eq("id", verification.business_id);
 
   revalidatePath("/admin/claims");
