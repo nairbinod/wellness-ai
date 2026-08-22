@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "import:places": "tsx scripts/import-places.ts",
-    "extract:emails": "tsx scripts/extract-emails.ts"
+    "extract:emails": "tsx scripts/extract-emails.ts",
+    "sync:mailerlite": "tsx scripts/sync-mailerlite-subscribers.ts",
+    "sync:sender": "tsx scripts/sync-sender-subscribers.ts"
   },
   "dependencies": {
     "@stripe/stripe-js": "^9.13.0",

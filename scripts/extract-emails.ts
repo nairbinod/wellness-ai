@@ -21,42 +21,9 @@ import { createClient } from "@supabase/supabase-js";
 
 config({ path: ".env.local" });
 import type { Database } from "../lib/types/database";
+import { isJunkEmail } from "../lib/junk-email";
 
 const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-
-// Junk we never want to treat as a business's contact email — CDN/analytics/
-// platform boilerplate that shows up in a lot of page source, and automated
-// senders that are useless for outreach even though they're real addresses.
-const JUNK_DOMAINS = [
-  "sentry.io",
-  "wixpress.com",
-  "godaddy.com",
-  "example.com",
-  "schema.org",
-  "w3.org",
-  "gstatic.com",
-  "googleapis.com",
-  "google.com",
-  "cloudflare.com",
-  "letsencrypt.org",
-  "yourdomain.com",
-  "domain.com",
-  "sentry.wixpress.com",
-  "wordpress.org",
-  "godaddy.com",
-];
-const JUNK_LOCAL_PREFIXES = ["noreply", "no-reply", "donotreply", "do-not-reply", "mailer-daemon", "postmaster"];
-const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"];
-
-function isJunkEmail(email: string) {
-  const lower = email.toLowerCase();
-  const [local, domain] = lower.split("@");
-  if (!domain) return true;
-  if (IMAGE_EXTENSIONS.some((ext) => lower.endsWith(ext))) return true;
-  if (JUNK_DOMAINS.some((junk) => domain === junk || domain.endsWith(`.${junk}`))) return true;
-  if (JUNK_LOCAL_PREFIXES.some((prefix) => local.startsWith(prefix))) return true;
-  return false;
-}
 
 function extractEmails(html: string): string[] {
   const found = new Set<string>();
